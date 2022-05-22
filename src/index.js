@@ -2,8 +2,7 @@ import './css/styles.css';
 import { fetchCountries } from "./fetchCountries";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import countriesMarkup from "./countriesMarkup.hbs";
-
-var debounce = require('lodash.debounce');
+import debounce from 'lodash.debounce';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -29,7 +28,9 @@ function onSearch(e) {
         .catch(error => showError(error));
 }
             
-function  showCountries(countries)  {      
+function showCountries(countries) { 
+    refs.listEl.innerHTML = "";
+    refs.cardContainer.innerHTML = "";
     if (countries.length > 10) { return Notify.info('Too many matches found. Please enter a more specific name.') };
     if (countries.length >= 2 && countries.length <= 10) {
         return renderListCountries(countries);
@@ -44,8 +45,6 @@ function renderListCountries(countries) {
 
 
 function renderCountryCard(countries) {
-    refs.listEl.innerHTML = "";
-    refs.cardContainer.innerHTML = "";
     const markup = countries.map(({ capital, population, flags, languages, name }) => {
         return `<img src="${flags.svg}" alt="${name.official}" width="30">
         <span class = "country-title"> <b> ${ name.official } </b> </span>
